@@ -54,6 +54,7 @@ protected:
   oPunchList punches;
   int cardNo;
   int miliVolt = 0; // Measured voltage of SIAC, if not zero.
+  int batteryDate = 0; // Battery date of SIAC, if not zero
 
   unsigned int readId; //Identify a specific read-out
 
@@ -81,6 +82,10 @@ public:
     Bad
   };
   BatteryStatus isCriticalCardVoltage() const;
+
+  void setBatteryDate(int date) { this->batteryDate = date; }
+  wstring getCardBatteryDate() const;
+  bool needBatteryService() const;
 
   static const shared_ptr<Table> &getTable(oEvent *oe);
 

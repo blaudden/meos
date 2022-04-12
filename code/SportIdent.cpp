@@ -1302,6 +1302,7 @@ void SportIdent::getSI9DataExt(HANDLE hComm)
   memset(b, 0, 128*5);
   BYTE c[16];
   int miliVolt = 0;
+  int batteryDate = 0;
 //	STX, 0xE1, 0x01, BN, CRC1,
 //CRC0, ETX
   debugLog(L"STARTREAD9 EXT-");
@@ -1441,6 +1442,16 @@ void SportIdent::getSI9DataExt(HANDLE hComm)
             /*char xx[30];
             sprintf_s(xx, "V = %f\n\n", voltage);
             OutputDebugStringA(xx);*/
+
+            // Battery replacement date
+            const int year = bf[66];  // Since 2000
+            const int month = bf[67]; // 1-12
+            const int day = bf[68];   // 1-31
+            /*char yy[30];
+            sprintf_s(yy, "batteryDate = %02d-%02d-%02d\n\n", year, month, day);
+            OutputDebugStringA(yy);*/
+            // 21-10-04 => 0x00211004
+            batteryDate = (year << 16) | (month << 8) | day;
           }
         }
       }
@@ -1459,6 +1470,7 @@ void SportIdent::getSI9DataExt(HANDLE hComm)
   SICard card(ConvertedTimeStatus::Hour24);
   if (getCard9Data(b, card)) {
     card.miliVolt = miliVolt;
+    card.batteryDate = batteryDate;
     addCard(card);
   }
 }

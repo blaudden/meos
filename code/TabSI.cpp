@@ -2490,6 +2490,7 @@ void TabSI::processInsertCard(const SICard &sic)
   card->setReadId(sic);
   card->setCardNo(sic.CardNumber);
   card->setMeasuredVoltage(sic.miliVolt);
+  card->setBatteryDate(sic.batteryDate);
 
   if (sic.CheckPunch.Code!=-1)
     card->addPunch(oPunch::PunchCheck, sic.CheckPunch.Time, 0);

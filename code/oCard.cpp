@@ -807,3 +807,34 @@ oCard::BatteryStatus oCard::isCriticalCardVoltage() const {
   return BatteryStatus::OK;
 }
 
+bool oCard::needBatteryService() const {
+  time_t now;
+  time(&now);
+
+  tm ltm;
+  localtime_s(&ltm, &now);
+  const int year = ltm.tm_year + 100;  // since 1900 -> 2000
+  const int month = ltm.tm_mon + 1;    // 0-11 -> 1-12
+  const int day = ltm.tm_mday;
+
+  /*char yy[30];
+  sprintf_s(yy, "NOW = %02d-%02d-%02d\n\n", year, month, day);
+  OutputDebugStringA(yy);*/
+
+  const int threeYearsAgo = ((year -  3) << 16) | (month << 8) | day;
+  if (batteryDate < threeYearsAgo)
+    return true;
+  return false;
+}
+
+wstring oCard::getCardBatteryDate() const {
+    if (batteryDate == 0)
+        return L"";
+    const int year = (batteryDate >> 16) & 0xFF;
+    const int month = (batteryDate >> 8) & 0xFF;
+    const int day = batteryDate & 0xFF;
+
+    wchar_t bf[64];
+    swprintf_s(bf, L"%02d.%02d.%02d", year, month, day);
+    return bf;
+}

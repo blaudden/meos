@@ -5082,13 +5082,21 @@ void oRunner::printSplits(gdioutput& gdi) const {
     else if (stat == oCard::BatteryStatus::Warning)
       warning = lang.tl("Low");
     else
-     warning = lang.tl("OK");
+      warning = lang.tl("OK");
+    wstring service;
+    if (getCard()->needBatteryService())
+      service = lang.tl("Service!");
+    else
+      service = lang.tl("OK");
     gdi.fillRight();
     gdi.pushX();
     gdi.addString("", fontSmall, L"Batteristatus:");
     gdi.addStringUT(boldSmall, getCard()->getCardVoltage());
     gdi.fillDown();
     gdi.addStringUT(fontSmall, L"(" + warning + L")");
+    gdi.addStringUT(fontSmall, getCard()->getCardBatteryDate());
+    gdi.fillDown();
+    gdi.addStringUT(fontSmall, L"(" + service + L")");
     gdi.dropLine(0.7);
     gdi.popX();
   }

@@ -92,6 +92,7 @@ struct SICard
   wchar_t lastName[21];
   wchar_t club[41];
   int miliVolt; // SIAC voltage
+  int batteryDate; // SIAC battery date
   char readOutTime[32];
   bool punchOnly;
   ConvertedTimeStatus convertedTime;
